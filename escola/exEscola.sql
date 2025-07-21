@@ -5,18 +5,18 @@ USE exEscola;
 create table if not exists Campus (
     codigo int primary key,
     
-    endereço varchar(100),
-    cidade varchar(100)
+    endereço varchar(100) not null,
+    cidade varchar(100) not null
 );
 
 
 create table if not exists Professor (
     matricula int primary key,
     
-    nome varchar(80),
+    nome varchar(80) not null,
     titulacao varchar(50),
     
-    codigo_campus int,
+    codigo_campus int not null,
     foreign key(codigo_campus) references Campus(codigo)    
 );
 
@@ -26,7 +26,7 @@ create table if not exists Notebook (
     
     data_compra date,
     
-    codigo_campus int,
+    codigo_campus int not null,
     foreign key(codigo_campus) references Campus(codigo)
 );
 
@@ -36,7 +36,7 @@ create table if not exists Turma (
     
     semestre int,
     
-    codigo_campus int,
+    codigo_campus int not null,
     foreign key(codigo_campus) references Campus(codigo)
 );
 
@@ -44,7 +44,7 @@ create table if not exists Turma (
 create table if not exists Aluno (
     matricula int primary key,
     
-    nome varchar(80),
+    nome varchar(80) not null,
     rendimento decimal(3, 1) 
 );
 
@@ -61,8 +61,8 @@ create table Professor_Leciona_Turma (
 
 
 create table Professor_Adquire_Notebook (
-    codigo_notebook int unique,
-    matricula_professor int unique,
+    codigo_notebook int,
+    matricula_professor int,
     primary key(codigo_notebook, matricula_professor),
     
     data_aquisicao date,
@@ -88,4 +88,5 @@ describe Professor_Leciona_Turma;
 describe Aluno;
 describe Notebook;
 describe Professor_Adquire_Notebook;
-describe Aluno_turmas;
+describe Aluno_Turmas;
+
