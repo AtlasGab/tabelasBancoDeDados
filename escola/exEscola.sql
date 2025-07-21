@@ -45,7 +45,7 @@ create table if not exists Aluno (
     matricula int primary key,
     
     nome varchar(80),
-    rendimento decimal(3, 1)
+    rendimento decimal(3, 1) 
 );
 
 
@@ -61,9 +61,10 @@ create table Professor_Leciona_Turma (
 
 
 create table Professor_Adquire_Notebook (
-    codigo_notebook int primary key,
-    
+    codigo_notebook int unique,
     matricula_professor int unique,
+    primary key(codigo_notebook, matricula_professor),
+    
     data_aquisicao date,
     
     foreign key (matricula_professor) references Professor(matricula),
