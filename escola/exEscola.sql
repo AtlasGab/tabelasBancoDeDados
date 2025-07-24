@@ -1,84 +1,74 @@
-CREATE DATABASE if not exists exEscola;
+CREATE DATABASE IF NOT EXISTS exEscola;
 USE exEscola;
 
 -- Tabelas e atributos --
-create table if not exists Campus (
-    codigo int primary key,
-    
-    endereço varchar(100) not null,
-    cidade varchar(100) not null
+CREATE TABLE IF NOT EXISTS Campus (
+    codigo INT PRIMARY KEY,
+    endereço VARCHAR(100) NOT NULL,
+    cidade VARCHAR(100) NOT NULL
 );
 
-
-create table if not exists Professor (
-    matricula int primary key,
-    
-    nome varchar(80) not null,
-    titulacao varchar(50),
-    
-    codigo_campus int not null,
-    foreign key(codigo_campus) references Campus(codigo)    
+CREATE TABLE IF NOT EXISTS Professor (
+    matricula INT PRIMARY KEY,
+    nome VARCHAR(80) NOT NULL,
+    titulacao VARCHAR(50),
+    codigo_campus INT NOT NULL,
+    FOREIGN KEY (codigo_campus) REFERENCES Campus(codigo)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
 );
 
-
-create table if not exists Notebook (
-    codigo int primary key,
-    
-    data_compra date,
-    
-    codigo_campus int not null,
-    foreign key(codigo_campus) references Campus(codigo)
+CREATE TABLE IF NOT EXISTS Notebook (
+    codigo INT PRIMARY KEY,
+    data_compra DATE,
+    codigo_campus INT NOT NULL,
+    FOREIGN KEY (codigo_campus) REFERENCES Campus(codigo)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
 );
 
-
-create table if not exists Turma (
-    codigo int primary key,
-    
-    semestre int,
-    
-    codigo_campus int not null,
-    foreign key(codigo_campus) references Campus(codigo)
+CREATE TABLE IF NOT EXISTS Turma (
+    codigo INT PRIMARY KEY,
+    semestre INT,
+    codigo_campus INT NOT NULL,
+    FOREIGN KEY (codigo_campus) REFERENCES Campus(codigo)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
 );
 
-
-create table if not exists Aluno (
-    matricula int primary key,
-    
-    nome varchar(80) not null,
-    rendimento decimal(3, 1),
-    
-    codigo_turma int not null,
-    foreign key(codigo_turma) references Turma(codigo)
+CREATE TABLE IF NOT EXISTS Aluno (
+    matricula INT PRIMARY KEY,
+    nome VARCHAR(80) NOT NULL,
+    rendimento DECIMAL(3,1),
+    codigo_turma INT NOT NULL,
+    FOREIGN KEY (codigo_turma) REFERENCES Turma(codigo)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
 );
-
 
 -- Relacionamentos --
-create table Professor_Leciona_Turma (
-    matricula_professor int,
-    codigo_turma int,
-    primary key(matricula_professor, codigo_turma),
+CREATE TABLE Professor_Leciona_Turma (
+    matricula_professor INT,
+    codigo_turma INT,
+    PRIMARY KEY (matricula_professor, codigo_turma),
+    FOREIGN KEY (matricula_professor) REFERENCES Professor(matricula)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
     
-    foreign key (matricula_professor) references Professor(matricula),
-    foreign key (codigo_turma) references Turma(codigo)
+    FOREIGN KEY (codigo_turma) REFERENCES Turma(codigo)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
 );
 
-
-create table Professor_Adquire_Notebook (
-    codigo_notebook int primary key,
-    matricula_professor int unique,
+CREATE TABLE Professor_Adquire_Notebook (
+    codigo_notebook INT PRIMARY KEY,
+    matricula_professor INT UNIQUE,
+    data_aquisicao DATE,
+    FOREIGN KEY (matricula_professor) REFERENCES Professor(matricula)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
     
-    data_aquisicao date,
-    
-    foreign key (matricula_professor) references Professor(matricula),
-    foreign key (codigo_notebook) references Notebook(codigo)
+    FOREIGN KEY (codigo_notebook) REFERENCES Notebook(codigo)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
 );
-
-
-
-describe Campus;
-describe Professor;
-describe Turma;
-describe Professor_Leciona_Turma;
-describe Aluno;
-describe Notebook;
-describe Professor_Adquire_Notebook;
