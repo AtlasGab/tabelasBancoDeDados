@@ -69,3 +69,14 @@ create table Programador_Domina_Linguagem (
     foreign key(cpf_programador) references Programador(cpf),
     foreign key(linguagem) references Linguagem_de_Programacao(linguagem)
 );
+
+
+
+
+
+
+
+
+
+
+
